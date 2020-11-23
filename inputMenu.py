@@ -1,6 +1,3 @@
-import hashlib
-import codePNG
-
 """
     FILE inputMenu bol vytvoreny pre nacitanie vsetkych potrebnych 
     vstupnych udajov - nazov obrazku, vstupny text, hash vstupneho
@@ -10,9 +7,16 @@ import codePNG
         encodeImgFormat(imgName) - podla formatu vrati maticu obrazku
         encodeMatrixFormat(arrayData, imgFormat) - z matice zrealizuje
                                                 obrazok podla formatu
+        maxSizeText(imgName) - zistuje max pocet znakov pre vstupny
+                                text
+        mainMenu() - najdolezitejsia funkcia, vola vsetky potrebne 
+                    funkcie a vracia vsetky potrebne parametre
     IMPORT -> napr. 'import inputMenu as iM'
         pristup k jednotlivym funkciam ->  iM.inputMenu()
 """
+import hashlib
+import codePNG as cP
+
 
 """
     Input: int - max pocet znakov, ktorych je mozne vlozit do obrazku
@@ -25,12 +29,13 @@ def checkInputText(maxText):
     try:
         text = str(input("Message[max {}]: ".format(maxText))).rstrip()
     except InterruptedError:
-        print("End of program...")
+        print("ERROR checkInputText(), end of program...")
     else:
         if len(text) <= maxText:
             return text
         else:
             return checkInputText(maxText)
+
 
 """
     Input: str - nazov obrazku, alebo cesta k nemu
@@ -40,15 +45,15 @@ def checkInputText(maxText):
     funkciu pre zakodovanie obrazku do matice.
 """
 def encodeImgFormat(imgName):
-    imgFormat = codePNG.checkType(imgName)
+    imgFormat = cP.checkType(imgName)
 
     if imgFormat == "PNG":
-        return codePNG.imgToArray(imgName), imgFormat
+        return cP.imgToMatrix(imgName), imgFormat
     elif imgFormat == "JPG":
         # ondrejova funkcia pre JPG
         pass
     else:
-        print("{} - nevhodny format!!")
+        print("{} - nevhodny format!!".format(imgFormat))
 
 
 """
@@ -58,9 +63,9 @@ def encodeImgFormat(imgName):
     zadaneho formatu. Tato funkcia sa zavola po pouziti LSB metody.
     Cize v matici bude ulozena sprava.
 """
-def encodeMatrixFormat(imgName, arrayData, imgFormat):
+def encodeMatrixFormat(imgName, matrixData, imgFormat):
     if imgFormat == "PNG":
-        return codePNG.arrayToImg(imgName, arrayData)
+        return cP.matrixToImg(imgName, matrixData)
     elif imgFormat == "JPG":
         # ondrejova funkcia pre obnovenie JPG
         pass
@@ -72,12 +77,13 @@ def encodeMatrixFormat(imgName, arrayData, imgFormat):
     Funkcia sluzi k zistenie max poctu znakov vstupnej spravy.
 """
 def maxSizeText(imgName):
-    imgFormat = codePNG.checkType(imgName)
+    imgFormat = cP.checkType(imgName)
     if imgFormat == "PNG":
-        return codePNG.getMaxSizeText(imgName)
+        return cP.getMaxSizeText(imgName)
     elif imgFormat == "JPG":
         # ondrejova funcia pre zistenie poctu pixelov
         pass 
+
 
 """
     Output: str, array, str, str - format obrazku,matica obrazku,
@@ -89,15 +95,12 @@ def maxSizeText(imgName):
 def mainMenu():
     try:
         imgName = str(input("Image name(napr pic.png): ")).rstrip()
-        arrayData, imgFormat = encodeImgFormat(imgName)
+        matrixData, imgFormat = encodeImgFormat(imgName)
         maxText = maxSizeText(imgName)
         text = checkInputText(maxText)
         hashText = hashlib.sha256(text.encode("utf-8")).hexdigest()
-        return imgFormat, arrayData, text, hashText
+        return imgFormat, matrixData, text, hashText
     except:
-        print("CHYBA")
+        print("Zadali ste nespravny parameter!!!!")
         return 0, 0, None, None
 
-
-r, a, t, h = mainMenu()
-print("format: {}\narray: {}\ntext: {}\nhash: {}".format(r, a, t, h))
