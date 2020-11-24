@@ -3,10 +3,14 @@ import sys
 #Sem si mmůžete zajít, když potřebujete něco zakódovat nebo rozkódovat z/do UTF-8
 #Stačí si naimportovat tento soubor pomocí - from textCodeDecode import TextCodeDecode
 
-#Input: int - Decimální reprezentace int
-#Output: int[] - Pole int bytů
-#Pomocná funkce pro reprezentaci čísla jako pole bytů. bytes() vyžaduje reprezentaci dat jako je výstup této funkce.
 def decToArray(dec):
+    """
+    param dec - int - Decimální reprezentace int
+    returns retArray - int[] -  Pole int bytů
+
+    Pomocná funkce pro reprezentaci čísla jako pole bytů. bytes() vyžaduje reprezentaci dat jako je výstup této funkce.
+    """
+
     retArray = []
     while(dec > 0):
         retArray.append(dec % 256)
@@ -18,18 +22,26 @@ def decToArray(dec):
 #Před použitím nějaké z metod si musíte vytvořit instanci (wow)
 class TextCodeDecode:
 
-    #Input: String - Řetězec UTF-8 znaků.
-    #Output: int - base10 reprezentace řetězce
-    #Tato metoda aktualizuje self.str a self.dec a převede řetězec na base10 int reprezentaci UTF-8
     def getDecFromString(self, str):
+        """
+        param str - String - Řetězec UTF-8 znaků.
+        returns dec - int - int - base10 reprezentace řetězce
+
+        Tato metoda aktualizuje self.str a self.dec a převede řetězec na base10 int reprezentaci UTF-8
+        """
+
         self.string = str
         self.dec = int.from_bytes(str.encode('UTF-8', 'strict'), "big")
         return self.dec
 
-    #Input: String - base10 reprezentace řetězce
-    #Output: int - Řetězec UTF-8 znaků. 
-    #Inverzní metoda k getDecFromString. Tato metoda aktualizuje self.dec a self.str a převede base10 int reprezentaci UTF-8 na řetězec
     def getStringFromDec(self, dec):
+        """
+        param dec - int - base10 reprezentace řetězce
+        returns String - int - Řetězec UTF-8 znaků.
+
+        Inverzní metoda k getDecFromString. Tato metoda aktualizuje self.dec a self.str a převede base10 int reprezentaci UTF-8 na řetězec
+        """
+
         self.dec = dec
         self.string = bytes(decToArray(dec)).decode('UTF-8', 'strict')
         return self.string
