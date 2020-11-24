@@ -59,7 +59,7 @@ def getMaxSizeText(imgName):
     with Image.open(imgName, "r") as img:
         width, height = img.size
         # 514 = (hashSize*2) + 2 .. hashSize-256b, 4b-RGBA, 2px-NULL point 
-        maxSize = int((width * height) / 2 - 514)
+        maxSize = int((width * height) / 2 - 2)
         return maxSize
 
 
@@ -90,7 +90,8 @@ def matrixToImg(imgName, matrixData):
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
-        img.save("stego_"+imgName)
+        imgName = imgName.split(".")
+        img.save("./data/{}_stego.{}".format(imgName[0], imgName[1]))
     else:
         print("Matrix is empty....")
 
