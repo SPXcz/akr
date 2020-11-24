@@ -5,17 +5,20 @@
     Funkcie:
         checkInputText(maxText) - kontrola vstupneho textu
         encodeImgFormat(imgName) - podla formatu vrati maticu obrazku
-        encodeMatrixFormat(arrayData, imgFormat) - z matice zrealizuje
-                                                obrazok podla formatu
+        encodeMatrixFormat(imgFormat, imgName, matrixData) 
+                        - z matice zrealizuje obrazok podla formatu
         maxSizeText(imgName) - zistuje max pocet znakov pre vstupny
                                 text
-        mainMenu() - najdolezitejsia funkcia, vola vsetky potrebne 
+        getAllParameters() - najdolezitejsia funkcia, vola vsetky potrebne 
                     funkcie a vracia vsetky potrebne parametre
     IMPORT -> napr. 'import inputMenu as iM'
         pristup k jednotlivym funkciam ->  iM.inputMenu()
 """
-import hashlib
-import codePNG as cP
+try:
+    import hashlib
+    import codePNG as cP
+except Exception as e:
+    print("'inputMenu.py', EXCEPTION modul: {}".format(e))
 
 
 """
@@ -63,7 +66,7 @@ def encodeImgFormat(imgName):
     zadaneho formatu. Tato funkcia sa zavola po pouziti LSB metody.
     Cize v matici bude ulozena sprava.
 """
-def encodeMatrixFormat(imgName, matrixData, imgFormat):
+def encodeMatrixFormat(imgName, imgFormat, matrixData):
     if imgFormat == "PNG":
         return cP.matrixToImg(imgName, matrixData)
     elif imgFormat == "JPG":
@@ -86,20 +89,19 @@ def maxSizeText(imgName):
 
 
 """
-    Output: str, array, str, str - format obrazku,matica obrazku,
-                                vstupny text, hash z textu
+    Output: str, str, array, str - nazov obrazku, format obrazku,
+                                matica obrazku, vstupny text
     Hlavna funkcia pre ziskanie vsetkych parametrov...
     Dajme tomu, ze to je ako konstruktor, vzdy sa musi zavolat
     na zaciatku celeho programu...
 """
-def mainMenu():
+def getAllParameters():
     try:
         imgName = str(input("Image name(napr pic.png): ")).rstrip()
         matrixData, imgFormat = encodeImgFormat(imgName)
         maxText = maxSizeText(imgName)
         text = checkInputText(maxText)
-        hashText = hashlib.sha256(text.encode("utf-8")).hexdigest()
-        return imgFormat, matrixData, text, hashText
+        return imgName, imgFormat, matrixData, text
     except:
         print("Zadali ste nespravny parameter!!!!")
         return 0, 0, None, None

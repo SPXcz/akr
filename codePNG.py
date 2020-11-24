@@ -15,8 +15,11 @@
         imgToMatrix(imgName) - z obrazku spravi maticu dat, base10
         matrixToImg(imgName, matrixData) - z matice spravi obrazok
 """
-from PIL import Image
-import numpy as np
+try:
+    from PIL import Image
+    import numpy as np
+except Exception as e:
+    print("'codePNG.py' EXCEPTION modul: {}".format(e))
 
 
 """
@@ -77,11 +80,12 @@ def imgToMatrix(imgName):
 
 
 """
-    Input: str, array
+    Input: str, array - nazov obrazku je povodny obrazok 
+                        napr. example.png
     Output - ulozi novy obrazok (stego_example.png)
     Funkcia, ktora z matice zrealizuje obrazok vo formate PNG.
 """
-def matrixToImg(imgName, matrixDat):
+def matrixToImg(imgName, matrixData):
     width, height = getImgSize(imgName)
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
