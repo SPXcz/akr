@@ -3,43 +3,66 @@ import numpy
 
 #Pak smazat a nahradit romanovou funkcí
 def getImgSize(imgName):
-    width, height = Image.open(imgName, "r").size
-    return width*height
+    with Image.open(imgName, "r") as img:
+        width, height = img.size
+
+    return width, height
 
 def imgToArray(path):
     """
     param path - String - Cesta k jpg souboru
     return arrayData - int[int[]] - Decimální matice reprezentující pixely (RGB)
     """
+    try:
+        with Image.open(path) as img:
+            width, height = img.size
+            data = img.load()
+    except OSError:
+        print("ERROR imgToArray({}), can't open!".format(path))
 
-    with Image.open(path) as img:
-        imgMat = img.convert('L')
-        arrayData = numpy.array(list(imgMat.getdata()))
-        print(arrayData)
+    row = []
+    for x in range(width):
+        for y in range(height):
+            r, g, b = data[x,y]
+            row.append(r)
+            row.append(g)
+            row.append(b)
     
-    return arrayData
+    imgMat = numpy.array(row)
+    imgMat = imgMat.reshape(len(row) // 3, 3)
 
-def arrayToImg(imgName, data):
+    return imgMat
+
+def arrayToImg(imgName, matrixIn):
     """
     param matrice - int[int[]] - Decimální matice reprezentující pixely (RGB)
     param imgName - String - Jméno souboru
     return path - String - Cesta k jpg souboru
     """
-    #size = getImgSize('./data/meme.jpg')
-    size = 65500
 
-    if data is not None:
-        data = data.reshape(size)
-        img = Image.fromarray(data.astype('uint8'), mode="L")
-        img.save(imgName)
+    width, height = getImgSize(imgName)
+    size = width, height
+
+    if matrixIn is not None:
+        img = Image.new("RGB", size)
+        imgData = img.load()
+        for x in range(width):
+            for y, point in zip(range(height), matrixIn):
+                r, g, b = point
+                imgData[x, y] = (r, g, b)
+            matrixIn = matrixIn[height:]
+
+        imgName = imgName.split(".jpg")[0]
+        img.save(imgName+"_stego.jpg")
         img.close()
-        return imgName
+        return imgName+"_stego.jpg"
     else:
         return None
 
 def main():
-    data = imgToArray('./data/meme.jpg')
-    print(arrayToImg("./data/test.jpg", data))
+    imgName = './data/meme.jpg'
+    data = imgToArray(imgName)
+    print(arrayToImg(imgName, data))
     
 
 main()
