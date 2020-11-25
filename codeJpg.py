@@ -85,5 +85,3 @@ def main():
     data = imgToArray(imgName)
     print(arrayToImg(imgName, data))
     
-
-main()
