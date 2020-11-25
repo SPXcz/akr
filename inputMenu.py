@@ -53,7 +53,7 @@ def encodeImgFormat(imgName):
 
     if imgFormat == "PNG":
         return cP.imgToMatrix(imgName), imgFormat
-    elif imgFormat == "JPG":
+    elif imgFormat == "JPEG":
         return cJ.imgToArray(imgName), imgFormat
     else:
         print("{} - nevhodny format!!".format(imgFormat))
@@ -69,7 +69,7 @@ def encodeImgFormat(imgName):
 def encodeMatrixFormat(imgName, imgFormat, matrixData):
     if imgFormat == "PNG":
         return cP.matrixToImg(imgName, matrixData)
-    elif imgFormat == "JPG":
+    elif imgFormat == "JPEG":
         return cJ.arrayToImg(imgName, matrixData)
     else:
         print("{} - nevhodny format!!".format(imgFormat))
@@ -84,7 +84,7 @@ def maxSizeText(imgName):
     imgFormat = cP.checkType(imgName)
     if imgFormat == "PNG":
         return cP.getMaxSizeText(imgName)
-    elif imgFormat == "JPG":
+    elif imgFormat == "JPEG":
         return cJ.getMaxSizeText(imgName)
     else:
         print("{} - nevhodny format!!".format(imgFormat))
