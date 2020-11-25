@@ -91,15 +91,15 @@ def maxSizeText(imgName):
 
 
 """
+    Input: str - Název souboru
     Output: str, str, array, str - nazov obrazku, format obrazku,
                                 matica obrazku, vstupny text
     Hlavna funkcia pre ziskanie vsetkych parametrov...
     Dajme tomu, ze to je ako konstruktor, vzdy sa musi zavolat
     na zaciatku celeho programu...
 """
-def getAllParameters():
+def getAllParameters(imgName):
     try:
-        imgName = str(input("Image name(napr pic.png): ")).rstrip()
         matrixData, imgFormat = encodeImgFormat(imgName)
         maxText = maxSizeText(imgName)
         text = checkInputText(maxText)

@@ -7,7 +7,7 @@
 # Časť projektu steganografie obrazku, kde je spracované dekodovanie textu
 # z obrázku, v ktorom bol text zakodovaný na najmenej príznakové bity.
 try:
-    import inputMenu as Mn
+    import akr.inputMenu as Mn
     import hashlib
     import numpy as np
 except Exception as e:
@@ -158,13 +158,14 @@ def compare_hash(hs_mess, hs_end_of_img, message):
         print("Value or Type error occurred")
 
 
-if __name__ == "__main__":
-    # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
-    matrix1, _ = Mn.encodeImgFormat("stego_matrix2.png")
-    mess = matrixToBinary(matrix1)
-    hash_of_me1 = hash_of_message(mess)
-    print(hash_of_me1)
-    hash_end1 = get_hash_from_end(matrix1)
-    print(hash_end1)
-    compare_hash(hash_of_me1, hash_end1, mess)
-    print(mess)
+def export(path):
+    if __name__ == "__main__":
+        # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
+        matrix1, _ = Mn.encodeImgFormat("stego_matrix2.png")
+        mess = matrixToBinary(matrix1)
+        hash_of_me1 = hash_of_message(mess)
+        print(hash_of_me1)
+        hash_end1 = get_hash_from_end(matrix1)
+        print(hash_end1)
+        compare_hash(hash_of_me1, hash_end1, mess)
+        print(mess)

@@ -15,8 +15,8 @@ Funkce:
 """
 import numpy as np
 import hashlib
-import inputMenu as iM
-import codePNG as cP
+import akr.inputMenu as iM
+import akr.codePNG as cP
 
 """
   Input: string - zprava kterou zada uzivatel
@@ -118,5 +118,5 @@ def lsbMetrixHash():
   matrixData = np.flip(matrixData) #otocim matici zpet
   return imgFormat, matrixData, imgName
 
-def main():
+def export(path):
   lsbMetrixHash()
