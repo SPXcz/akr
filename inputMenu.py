@@ -107,4 +107,3 @@ def getAllParameters():
     except:
         print("Zadali ste nespravny parameter!!!!")
         return 0, 0, None, None
-
