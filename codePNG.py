@@ -92,6 +92,7 @@ def matrixToImg(imgName, matrixData):
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
         imgName = imgName.split(".")
         img.save("./data/{}_stego.{}".format(imgName[0], imgName[1]))
+        return imgName+"_stego.jpg"
     else:
         print("Matrix is empty....")
 
