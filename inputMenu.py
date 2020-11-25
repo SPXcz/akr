@@ -17,6 +17,7 @@
 try:
     import hashlib
     import codePNG as cP
+    import codeJpg as cJ
 except Exception as e:
     print("'inputMenu.py', EXCEPTION modul: {}".format(e))
 
@@ -53,8 +54,7 @@ def encodeImgFormat(imgName):
     if imgFormat == "PNG":
         return cP.imgToMatrix(imgName), imgFormat
     elif imgFormat == "JPG":
-        # ondrejova funkcia pre JPG
-        pass
+        return cJ.imgToArray(imgName), imgFormat
     else:
         print("{} - nevhodny format!!".format(imgFormat))
 
@@ -70,8 +70,9 @@ def encodeMatrixFormat(imgName, imgFormat, matrixData):
     if imgFormat == "PNG":
         return cP.matrixToImg(imgName, matrixData)
     elif imgFormat == "JPG":
-        # ondrejova funkcia pre obnovenie JPG
-        pass
+        return cJ.arrayToImg(imgName, matrixData)
+    else:
+        print("{} - nevhodny format!!".format(imgFormat))
         
 
 """
@@ -84,8 +85,9 @@ def maxSizeText(imgName):
     if imgFormat == "PNG":
         return cP.getMaxSizeText(imgName)
     elif imgFormat == "JPG":
-        # ondrejova funcia pre zistenie poctu pixelov
-        pass 
+        return cJ.getMaxSizeText(imgName)
+    else:
+        print("{} - nevhodny format!!".format(imgFormat))
 
 
 """
