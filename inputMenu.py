@@ -42,7 +42,7 @@ def checkInputText(maxText):
 
 
 """
-    Input: str - nazov obrazku, alebo cesta k nemu
+    Input: str - nazov obrazku, alebo cesta k nemu.
     Output: array, str - matica obrazku, zalezi podla formatu
     Funkcia ma za ulohu ulahcit pracu uzivatelovi, aby nemusel manualne
     zadavat format obrazku. Podla zisteneho formatu zavola vhodnu
