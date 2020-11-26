@@ -139,11 +139,12 @@ def compare_hash(hs_mess, hs_end_of_img, message):
 
 def export(path):
         # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
+        # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
         matrix1, img_format = Mn.encodeImgFormat(path)
+        print(img_format)
         mess = matrixToBinary(matrix1)
         hash_of_me1 = hash_of_message(mess)
         print(hash_of_me1)
         hash_end1 = get_hash_from_end(matrix1)
         print(hash_end1)
         compare_hash(hash_of_me1, hash_end1, mess)
-        print(mess)
