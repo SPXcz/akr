@@ -45,31 +45,12 @@ def matrixToBinary(matrix_of_img):
             for j in range(0, len(matrix_of_img[i])):
                 binary_matrix = decimalToBinary(matrix_of_img[i][j])
                 binary_stream = binary_stream + binary_matrix
-                if binary_matrix == "0":
+                if len(binary_matrix) != 8:
                     raise ValueError("binarna hodnota matrixu neni v oktalovom tvare")
                 if 64 == len(binary_stream):
                     lsb = getLSB(binary_stream)
                     if lsb == '00000011':
                         return text
-                    text = text + binaryToUTF8(lsb)
-                    binary_stream = ""
-        return text
-    except(ValueError, TypeError):
-        print("Matica je v nespravnom formate")
-
-
-def matrixToBinary2(matrix_of_img):
-    try:
-        text = ''
-        binary_stream = ''
-        for i in range(0, len(matrix_of_img)):
-            for j in range(0, len(matrix_of_img[i])):
-                binary_matrix = decimalToBinary(matrix_of_img[i][j])
-                binary_stream = binary_stream + binary_matrix
-                if binary_matrix == "0":
-                    raise ValueError("binarna hodnota matrixu neni v oktalovom tvare")
-                if 64 == len(binary_stream):
-                    lsb = getLSB(binary_stream)
                     text = text + binaryToUTF8(lsb)
                     binary_stream = ""
         return text
@@ -89,14 +70,12 @@ def matrixToBinary2(matrix_of_img):
 def getLSB(binary_stream):
     try:
         lsb = ''
-        one_char = ""
         j = 0
         while binary_stream != "":
             px = binary_stream[:8]
             lsb = lsb + px[-1]
             j += 1
             if j == 8:
-                one_char = lsb[-8:]
                 j = 0
             binary_stream = binary_stream[8:]
         return lsb
@@ -137,7 +116,7 @@ def hash_of_message(message):
 # @return hash            Funckia Vrati dekodovany hash
 def get_hash_from_end(matrix):
     hash_end = np.flip(matrix[-512//len(matrix[0]):])
-    hash_string = matrixToBinary2(hash_end)
+    hash_string = matrixToBinary(hash_end)
     return hash_string
 
 
@@ -151,7 +130,7 @@ def get_hash_from_end(matrix):
 def compare_hash(hs_mess, hs_end_of_img, message):
     try:
         if hs_mess == hs_end_of_img:
-            print(message)
+            print("Dekodovana sprava: "+message)
         else:
             print("Sprava bola pomenena ")
     except(TypeError, ValueError):
