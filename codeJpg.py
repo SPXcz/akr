@@ -75,10 +75,9 @@ def arrayToImg(imgName, matrixIn):
             matrixIn = matrixIn[height:]
 
         imgName = re.findall(r"[\w']+", imgName)
-        img.save("data/{}_stego.{}".format(imgName[-2], imgName[-1]))
-        return "data/{}_stego.{}".format(imgName[-2], imgName[-1])
+        img.save("data/{}_stego.{}".format(imgName[-2], imgName[-1]), format='JPEG', quality=100)
         img.close()
-        return imgName+"_stego.jpg"
+        return "data/{}_stego.{}".format(imgName[-2], imgName[-1])
     else:
         return None
 
