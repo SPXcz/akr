@@ -7,7 +7,7 @@
 # Časť projektu steganografie obrazku, kde je spracované dekodovanie textu
 # z obrázku, v ktorom bol text zakodovaný na najmenej príznakové bity.
 try:
-    import akr.inputMenu as Mn
+    import inputMenu as Mn
     import hashlib
     import numpy as np
 except Exception as e:

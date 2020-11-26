@@ -15,8 +15,8 @@ Funkce:
 """
 import numpy as np
 import hashlib
-import akr.inputMenu as iM
-import akr.codePNG as cP
+import inputMenu as iM
+import codePNG as cP
 
 """
   Input: string - zprava kterou zada uzivatel
