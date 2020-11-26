@@ -5,11 +5,12 @@ import LSBdecodePNG as outlsb
 try:
     if(argv[1] == "-h"):
         path = argv[2]
-        inlsb.export(argv[1])
+        message = argv[3]
+        inlsb.export(path, message)
         print("Your image is in ./data directory")
-    elif(argv[1] == "-g"):
+    elif(argv[1] == "-g" and argv[2] is not None):
         path = argv[2]
-        outlsb.export(argv[1])
+        outlsb.export(path)
     elif(argv[1] == "-help"):
         print("Usage: python3 App.py [MODE] [FILE PATH] \"[MESSAGE]\"")
         print("MODE:")
