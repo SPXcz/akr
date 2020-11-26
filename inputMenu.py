@@ -29,16 +29,15 @@ except Exception as e:
     a zaroven kontroluje max pocet znakov textu, ak je text vacsi nez
     max pocet znakov, rekurzivne sa zavola znovu tato funkcia.
 """
-def checkInputText(maxText):
-    try:
-        text = str(input("Message[max {}]: ".format(maxText))).rstrip()
-    except InterruptedError:
-        print("ERROR checkInputText(), end of program...")
+def checkInputText(text, maxText):
+    if len(text) <= maxText:
+        return text
     else:
-        if len(text) <= maxText:
-            return text
-        else:
-            return checkInputText(maxText)
+        try:
+            text = str(input("Message[max {}]: ".format(maxText))).rstrip()
+            return checkInputText(text, maxText)
+        except InterruptedError:
+            print("ERROR checkInputText(), end of program...")
 
 
 """
