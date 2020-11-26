@@ -126,4 +126,5 @@ def lsbMetrixHash(imgName, text):
   iM.encodeMatrixFormat(imgName, imgFormat, matrixData)
 
 def export(imgName, text):
+  text = iM.checkInputText(iM.maxSizeText(imgName))
   lsbMetrixHash(imgName, text)
