@@ -105,7 +105,7 @@ def getAllParameters(imgName):
         matrixData, imgFormat = encodeImgFormat(imgName)
         maxText = maxSizeText(imgName)
         text = checkInputText(maxText)
-        return imgName, imgFormat, matrixData, text
+        return imgFormat, matrixData, text
     except:
         print("Zadali ste nespravny parameter!!!!")
         return 0, 0, None, None
