@@ -52,7 +52,7 @@ def formatResearch(imgName):
   if imgFormat == "PNG":
     n = 4 
     m = 0
-  elif imgFormat == "JPG":
+  elif imgFormat == "JPEG":
     n = 3
     m = 0
   return n, m
