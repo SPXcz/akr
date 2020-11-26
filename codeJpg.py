@@ -1,5 +1,6 @@
 from PIL import Image, ImageFilter
 import numpy
+import re
 
 #Pak smazat a nahradit romanovou funkcí
 def getImgSize(imgName):
@@ -73,8 +74,9 @@ def arrayToImg(imgName, matrixIn):
                 imgData[x, y] = (r, g, b)
             matrixIn = matrixIn[height:]
 
-        imgName = imgName.split(".jpg")[0]
-        img.save(imgName+"_stego.jpg")
+        imgName = re.findall(r"[\w']+", imgName)
+        img.save("data/{}_stego.{}".format(imgName[-2], imgName[-1]))
+        return "data/{}_stego.{}".format(imgName[-2], imgName[-1])
         img.close()
         return imgName+"_stego.jpg"
     else:
