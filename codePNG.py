@@ -18,6 +18,7 @@
 try:
     from PIL import Image
     import numpy as np
+    import re
 except Exception as e:
     print("'codePNG.py' EXCEPTION modul: {}".format(e))
 
@@ -90,8 +91,8 @@ def matrixToImg(imgName, matrixData):
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
-        imgName = imgName.split(".")
-        img.save("./data/{}_stego.{}".format(imgName[0], imgName[1]))
-        return imgName+"_stego.jpg"
+        imgName = re.findall(r"[\w']+", imgName)
+        img.save("data/{}_stego.{}".format(imgName[-2], imgName[-1]))
+        return "data/{}_stego.{}".format(imgName[-2], imgName[-1])
     else:
         print("Matrix is empty....")
