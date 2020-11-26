@@ -1,14 +1,26 @@
 from sys import argv
-import akr.codeMatrix as inlsb
-import akr.LSBdecodePNG as outlsb
+import codeMatrix as inlsb
+import LSBdecodePNG as outlsb
 
 try:
-    if(argv[0] == "-e"):
+    if(argv[1] == "-h"):
+        path = argv[2]
         inlsb.export(argv[1])
-        print("Your image is in your directory")
-    elif(argv[0] == "-d"):
+        print("Your image is in ./data directory")
+    elif(argv[1] == "-g"):
+        path = argv[2]
         outlsb.export(argv[1])
+    elif(argv[1] == "-help"):
+        print("Usage: python3 App.py [MODE] [FILE PATH] \"[MESSAGE]\"")
+        print("MODE:")
+        print("-h\tHide an image in your provided file")
+        print("-g\tGet a message from your provided image")
+        print("FILE PATH:")
+        print("[FILE PATH]\tPath to the file with your picture. File has to end with either .png or .jpg")
+        print("MESSAGE:")
+        print("[MESSAGE]\tString with your message. Must begin and end with \"")
     else:
-        print("Wrong flag. Chose either \"-d\" for decoding or \"-e\" for encoding")
+        print("Wrong flag. Use -help to explore options.")
 except Exception as e:
-    print(e+" You have to add path to your picture.")
+    print(e)
+    print("Use python3 App.py -help to get more info.")

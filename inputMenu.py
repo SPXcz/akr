@@ -16,8 +16,8 @@
 """
 try:
     import hashlib
-    import akr.codePNG as cP
-    import akr.codeJpg as cJ
+    import codePNG as cP
+    import codeJpg as cJ
 except Exception as e:
     print("'inputMenu.py', EXCEPTION modul: {}".format(e))
 
