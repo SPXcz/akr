@@ -103,8 +103,7 @@ def maxSizeText(imgName):
 def getAllParameters(imgName):
     try:
         matrixData, imgFormat = encodeImgFormat(imgName)
-        maxText = maxSizeText(imgName)
         return imgFormat, matrixData
     except:
         print("Zadali ste nespravny parameter!!!!")
-        return 0, 0, None, None
+        return None, None
