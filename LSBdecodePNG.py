@@ -1,6 +1,6 @@
 # @file SteganoCBTencode.py
 # @author Michal Kaiser(221034)
-# @version 0.2
+# @version 0.4
 # @date 2020-11-23
 # @copyright Copyright (c) 2020
 #
@@ -138,9 +138,8 @@ def compare_hash(hs_mess, hs_end_of_img, message):
 
 
 def export(path):
-    if __name__ == "__main__":
         # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
-        matrix1, _ = Mn.encodeImgFormat(path)
+        matrix1, img_format = Mn.encodeImgFormat(path)
         mess = matrixToBinary(matrix1)
         hash_of_me1 = hash_of_message(mess)
         print(hash_of_me1)
