@@ -92,7 +92,7 @@ def matrixToImg(imgName, matrixData):
         matrixData = matrixData.reshape(height, width, 4)
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
         imgName = re.findall(r"[\w']+", imgName)
-        img.save("data/{}_stego.{}".format(imgName[-2], imgName[-1]))
-        return "data/{}_stego.{}".format(imgName[-2], imgName[-1])
+        img.save("data/{}_stego.png".format(imgName[-2]))
+        return "data/{}_stego.png".format(imgName[-2])
     else:
         print("Matrix is empty....")
