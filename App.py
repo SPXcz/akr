@@ -14,7 +14,7 @@ try:
     elif(argv[1] == "-help"):
         print("Usage: python3 App.py [MODE] [FILE PATH] \"[MESSAGE]\"")
         print("MODE:")
-        print("-h\tHide an image in your provided file")
+        print("-h\tHide a message into your provided image")
         print("-g\tGet a message from your provided image")
         print("FILE PATH:")
         print("[FILE PATH]\tPath to the file with your picture. File has to end with either .png or .jpg")
@@ -25,3 +25,4 @@ try:
 except Exception as e:
     print(e)
     print("Use python3 App.py -help to get more info.")
+
