@@ -42,23 +42,31 @@ def aritmeticMatrix(matA, matB):
     return  sumNum / len(matrix), maxNum
 
 
+def writeToTxt(matrix):
+    with open("matrix.txt", "w") as f:
+        f.write("\n".join(" ".join(map(str, x)) for x in matrix))
+
+
 def main():
     listData = [[]]
-    for i in range(100):
-        img1 = "data/meme.jpg"
-        origMatrix = getRandomMatrix(maxSize(img1))
-        cJ.arrayToImg(img1, origMatrix)
+    # for i in range(100):
+    img1 = "data/meme.jpg"
+    origMatrix = getRandomMatrix(maxSize(img1))
+    cJ.arrayToImg(img1, origMatrix)
         
-        img2 = "data/meme_stego.jpg"
-        matA = cJ.imgToArray(img2)
-        cJ.arrayToImg(img2, matA)
+    img2 = "data/meme_stego.jpg"
+    matA = cJ.imgToArray(img2)
+    cJ.arrayToImg(img2, matA)
         
-        img3 = "data/meme_stego_stego.jpg"
-        matB = cJ.imgToArray(img3)
+    img3 = "data/meme_stego_stego.jpg"
+    matB = cJ.imgToArray(img3)
 
-        aritNum = aritmeticMatrix(matA, matB)
-        listData.append(aritNum)
-        print("{}.  | {} ".format(i, aritNum))
+    #aritNum = aritmeticMatrix(matA, matB)
+    #listData.append(aritNum)
+
+    matrix = compareMatrix(matA, matB)
+    writeToTxt(matrix)
+    #print("{}.  | {} ".format(i, aritNum))
 
 """
     snazil som sa to ulozit automaticky do suboru, ale 
