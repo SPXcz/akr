@@ -11,11 +11,24 @@ RGB modes is represented by 3x8-bit pixels, and for RGBA its 4x8 bit pixels. Eac
    `pip install numpy`
 # Usage
 ## Encryption
+To hidding data into the picture we use App.py. For the program to function you need to add these arguments:
+
+`python3 App.py -h ./data/[Name of the file].[File format] "[Message]"`
+- **Name of the file** - Write exact name of the file. File has to be saved in data folder
+- **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
+- **Message** - Message you want to encrypr to picture
 ## Decrption
+To expose hidden data from the picture we use App.py. For the program to function you need to add these arguments:
+
+`python3 App.py -g ./data/[Name of the file].[File format]`
+- **Name of the file** - Write exact name of the file. File has to be saved in data folder
+- **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
+
+
 # Telegram
 # Image comparison
 # Authors
-- Roman Klampar
-- Michal Kaiser
-- Ondrej Chudacek
-- Petr Kriz
+- Roman Klampar - files, making matrix from png format, storing matrix into
+- Michal Kaiser - decode function
+- Ondrej Chudacek - files, jpeg format, storing matrix into picture
+- Petr Kriz - encode function, read.me
