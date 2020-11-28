@@ -65,13 +65,12 @@ def encodeImgFormat(imgName):
     zadaneho formatu. Tato funkcia sa zavola po pouziti LSB metody.
     Cize v matici bude ulozena sprava.
 """
-def encodeMatrixFormat(imgName, imgFormat, matrixData):
-    if imgFormat == "PNG":
+def encodeMatrixFormat(imgName, matrixData): 
+    if matrixData != None:
         return cP.matrixToImg(imgName, matrixData)
-    elif imgFormat == "JPEG":
-        return cJ.arrayToImg(imgName, matrixData)
     else:
-        print("{} - nevhodny format!!".format(imgFormat))
+        print("Matrix is empty, return None...")
+        return None
         
 
 """
@@ -80,29 +79,5 @@ def encodeMatrixFormat(imgName, imgFormat, matrixData):
     Funkcia sluzi k zistenie max poctu znakov vstupnej spravy.
 """
 def maxSizeText(imgName):
-    imgFormat = cP.checkType(imgName)
-    if imgFormat == "PNG":
-        return cP.getMaxSizeText(imgName)
-    elif imgFormat == "JPEG":
-        return cJ.getMaxSizeText(imgName)
-    else:
-        print("{} - nevhodny format!!".format(imgFormat))
+    return cP.getMaxSizeText(imgName)
 
-
-"""
-    Input: str - Název souboru
-    Output: str, str, array, str - nazov obrazku, format obrazku,
-                                matica obrazku, vstupny text
-    Hlavna funkcia pre ziskanie vsetkych parametrov...
-    Dajme tomu, ze to je ako konstruktor, vzdy sa musi zavolat
-    na zaciatku celeho programu...
-
-    Nepouživané.
-"""
-def getAllParameters(imgName):
-    try:
-        matrixData, imgFormat = encodeImgFormat(imgName)
-        return imgFormat, matrixData
-    except:
-        print("Zadali ste nespravny parameter!!!!")
-        return None, None
