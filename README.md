@@ -6,7 +6,8 @@ Digital image is represented by pixels. Each pixel contains values depending on 
 RGB modes is represented by 3x8-bit pixels, and for RGBA its 4x8 bit pixels. Each bit has values range from 0-255.
 # Installation
 1. Download this repository
-2.
+2. Install libraries by writing this to CMD
+`pip install numpy`
 # Usage
 ## Encryption
 ## Decrption
