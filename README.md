@@ -27,7 +27,9 @@ To expose hidden data from the picture we use App.py. For the program to functio
 
 # Telegram
 # Image comparison
-![pic1](data/lol.png) [pic2](data/lol_stego.png)
+Original picture          |  Picture with message
+:-------------------------:|:-------------------------:
+![](data/lol.png)  |  ![](data/lol_stego.png)
 # Authors
 - Roman Klampar - files, making matrix from png format, storing matrix into
 - Michal Kaiser - decode function
