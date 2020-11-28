@@ -1,19 +1,29 @@
 """
     FILE codePNG bol vytvoreny pre nacitanie obrazku vo formate
-    PNG, z ktoreho spravi maticu RGBa a naopak z matice spravi 
-    PNG obrazok, dalej tu najdes funkciu, ktora kontroluje typ
-    formatu
+    png a jpg, z ktorych spravi maticu, jpg sa ulozi ako png a az 
+    potom sa do obrazku skryje sprava, dalej tu najdes funckie na
+    kontrolu image typu, spravenie z obrazku maticu a z matice 
+    obrazok, dalej kontroluje vstupny text na zaklade max 
+    povoleneho mnozstva znakov pre vstupny text...
     ukazka matice ->   [[R, G, B, a], 
                         [R, G, B, a],
                         ....
                         [R, G, B, a]]
     Funkcie:
-        checkType(imgName) - kontroluje typ obrazku
-        getImgSize(imgName) - zistuje sirku a vysku obrazku
-        getMaxSizeText(imgName) - pocita maximalny pocet znakov
-                                pre vstupny text
-        imgToMatrix(imgName) - z obrazku spravi maticu dat, base10
-        matrixToImg(imgName, matrixData) - z matice spravi obrazok
+        checkType(imgName) - kontroluje format obrazku
+        getImgSize(imgName) - vracia sirku a vysku obrazku
+        getMaxSizeText(imgName) - vracia max pocet znakov pre 
+                                    vstupny text
+        saveImageName(imgName) - upravi nazov stego obrazku
+        jpegToPng(imgName) - z jpg spravi png
+        imgToMatrix(imgName) - z obrazku spravi maticu RGBA hodnot
+        matrixToImg(imgName, matrixData) - z matice RGBA spravi
+                                            obrazok
+        checkInputText(maxText) - kontrola vstupneho textu
+        encodeImgFormat(imgName) - podla formatu vrati maticu obrazku
+
+    IMPORT -> napr. 'import codePNG as cP'
+        pristup k jednotlivym funkciam ->  cP.checkInputText()
 """
 try:
     from PIL import Image
@@ -59,9 +69,43 @@ def getImgSize(imgName):
 def getMaxSizeText(imgName):
     with Image.open(imgName, "r") as img:
         width, height = img.size
-        # 514 = (hashSize*2) + 2 .. hashSize-256b, 4b-RGBA, 2px-NULL point
+        # 514=(hashSize*2)+2 ..hashSize-256b,4b-RGBA,2px-NULL point
         maxSize = int((width * height) / 2 - 516)
         return maxSize
+
+
+"""
+    Input: str - nazov obrazku, alebo cestu k nemu
+    Output: str - cestu k obrazku
+    Funkcia sluzi k tomu, ze nacita nazov obrazku a
+    prisposoby nazov k ulozeniu stego obrazku.
+"""    
+def saveImageName(imgName):
+    img = re.findall(r"[\w']+", imgName)
+    
+    if img[-1] == "jpg":
+        return "data/{}_jpeg_stego.png".format(img[-2])
+    elif img[-1] == "png":
+        return "data/{}_stego.png".format(img[-2])
+    else:
+        return None
+
+
+"""
+    Input: str - nazov obrazku, alebo cesta k nemu
+    Output: str - nazov obrazku, alebo cestu k nemu
+    Funkcia ma za ulohu nacitat jpg obrazok a preformatovat
+    ho na png. Vystup vracia nazov, alebo cestu k 
+    novovytvoreneho obrazku .png .
+"""
+def jpegToPng(imgName):
+    try:
+        newName = saveImageName(imgName)
+        with Image.open(imgName, "r") as img:
+            img.save(newName)
+            return newName
+    except OSError:
+        print("ERROR jpegToPng({}), can't open!".format(imgName))
 
 
 """
@@ -80,15 +124,6 @@ def imgToMatrix(imgName):
         print("ERROR imgToArray({}), can't open!".format(imgName))
 
 
-def jpegToPng(imgName):
-    imgN = re.findall(r"[\w']+", imgName)
-    with Image.open(imgName, "r") as img:
-        newName = "data/{}_jpeg_stego.png".format(imgN[-2])
-        img.save(newName)
-        return newName
-        
-
-
 """
     Input: str, array - nazov obrazku je povodny obrazok 
                         napr. example.png
@@ -96,18 +131,51 @@ def jpegToPng(imgName):
     Funkcia, ktora z matice zrealizuje obrazok vo formate PNG.
 """
 def matrixToImg(imgName, matrixData):
-    print(matrixData)
     width, height = getImgSize(imgName)
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
-        imgName = re.findall(r"[\w']+", imgName)
-
-        if imgName[-1] == "jpg":
-            formatName = "data/{}_jpeg_stego.png".format(imgName[-2])
+        newName = saveImageName(imgName)
+        if newName is not None:
+            img.save(newName)
+            return newName
         else:
-            formatName = "data/{}_stego.png".format(imgName[-2])
-        img.save(formatName)
-        return formatName
+            text = """The image is not saved!! The image format is not
+            suported by the program!"""
+            print(text)
+            return None
     else:
         print("Matrix is empty....")
+
+
+"""
+    Input: str - nazov obrazku, alebo cesta k nemu.
+    Output: array, str - matica obrazku, zalezi podla formatu
+    Funkcia ma za ulohu ulahcit pracu uzivatelovi, aby nemusel manualne
+    zadavat format obrazku. Podla zisteneho formatu zavola vhodnu
+    funkciu pre zakodovanie obrazku do matice.
+"""
+def encodeImgFormat(imgName):
+    imgFormat = checkType(imgName)
+    if imgFormat == "JPEG":
+        imgName = jpegToPng(imgName)
+    return imgToMatrix(imgName), imgFormat
+
+
+"""
+    Input: int - max pocet znakov, ktorych je mozne vlozit do obrazku
+    Output: str - return vstupneho textu
+    Pomocna funkcia, ktora je urcena pre nacitanie vstupneho textu
+    a zaroven kontroluje max pocet znakov textu, ak je text vacsi nez
+    max pocet znakov, rekurzivne sa zavola znovu tato funkcia.
+"""
+def checkInputText(text, maxText):
+    if len(text) <= maxText:
+        return text
+    else:
+        try:
+            text = str(input("Message[max {}]: ".format(maxText))).rstrip()
+            return checkInputText(text, maxText)
+        except InterruptedError:
+            print("ERROR checkInputText(), end of program...")
+

@@ -5,17 +5,19 @@
     Funkcie:
         checkInputText(maxText) - kontrola vstupneho textu
         encodeImgFormat(imgName) - podla formatu vrati maticu obrazku
-        encodeMatrixFormat(imgFormat, imgName, matrixData) 
-                        - z matice zrealizuje obrazok podla formatu
-        maxSizeText(imgName) - zistuje max pocet znakov pre vstupny
-                                text
     IMPORT -> napr. 'import inputMenu as iM'
-        pristup k jednotlivym funkciam ->  iM.inputMenu()
+        pristup k jednotlivym funkciam ->  iM.checkInputText()
+
+
+
+
+        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        TOTO VYMATEM :D :D
+        lebo je to ybztocneeeee...... treba sa odkazat na codePNG.py
+        tam najdete vsetko
 """
 try:
-    import hashlib
     import codePNG as cP
-    import codeJpg as cJ
 except Exception as e:
     print("'inputMenu.py', EXCEPTION modul: {}".format(e))
 
@@ -50,24 +52,4 @@ def encodeImgFormat(imgName):
     if imgFormat == "JPEG":
         imgName = cP.jpegToPng(imgName)
     return cP.imgToMatrix(imgName), imgFormat
-
-
-"""
-    Input: array, str - maticu obrazku, format obrazku
-    Output: zavola funkciu pre ulozenie obrazku
-    Funkcia bola navrhnuta pre opatovne zostavenie obrazku podla
-    zadaneho formatu. Tato funkcia sa zavola po pouziti LSB metody.
-    Cize v matici bude ulozena sprava.
-"""
-def encodeMatrixFormat(imgName, matrixData): 
-        return cP.matrixToImg(imgName, matrixData)
-        
-
-"""
-    Input: str - nazov obrazku
-    Output: int - max povoleny pocet znakov pre spravu
-    Funkcia sluzi k zistenie max poctu znakov vstupnej spravy.
-"""
-def maxSizeText(imgName):
-    return cP.getMaxSizeText(imgName)
 
