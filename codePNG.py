@@ -96,7 +96,6 @@ def jpegToPng(imgName):
     Funkcia, ktora z matice zrealizuje obrazok vo formate PNG.
 """
 def matrixToImg(imgName, matrixData):
-    print(matrixData)
     width, height = getImgSize(imgName)
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
