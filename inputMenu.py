@@ -53,7 +53,7 @@ def encodeImgFormat(imgName):
     if imgFormat == "PNG":
         return cP.imgToMatrix(imgName), imgFormat
     elif imgFormat == "JPEG":
-        return cJ.imgToArray(imgName), imgFormat
+        return cJ.rgbToRgba(cJ.imgToArray(imgName)), imgFormat
     else:
         print("{} - nevhodny format!!".format(imgFormat))
 
@@ -66,11 +66,7 @@ def encodeImgFormat(imgName):
     Cize v matici bude ulozena sprava.
 """
 def encodeMatrixFormat(imgName, matrixData): 
-    if matrixData != None:
         return cP.matrixToImg(imgName, matrixData)
-    else:
-        print("Matrix is empty, return None...")
-        return None
         
 
 """

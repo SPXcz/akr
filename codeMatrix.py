@@ -53,7 +53,7 @@ def formatResearch(imgName):
     n = 4 
     m = 0
   elif imgFormat == "JPEG":
-    n = 3
+    n = 4
     m = 0
   return n, m
   
