@@ -17,6 +17,8 @@ To hidding data into the picture we use App.py. For the program to function you 
 - **Name of the file** - Write exact name of the file. File has to be saved in data folder
 - **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
 - **Message** - Message you want to encrypr to picture
+
+New picture is saved into data folder
 ## Decrption
 To expose hidden data from the picture we use App.py. For the program to function you need to add these arguments:
 
@@ -24,7 +26,7 @@ To expose hidden data from the picture we use App.py. For the program to functio
 - **Name of the file** - Write exact name of the file. File has to be saved in data folder
 - **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
 
-
+New picture is saved into data folder
 # Telegram
 # Image comparison
 Original picture          |  Picture with message
