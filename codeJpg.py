@@ -60,6 +60,8 @@ def arrayToImg(imgName, matrixIn):
 
     Output - ulozi novy obrazok (stego_example.png)
     Funkcia, ktora z matice zrealizuje obrazok vo formate JPG.
+
+    NEPOUŽÍVÁNO
     """
 
     width, height = getImgSize(imgName)
@@ -81,8 +83,29 @@ def arrayToImg(imgName, matrixIn):
     else:
         return None
 
+def rgbToRgba(rgbMat):
+    """
+    param matrice - int[int[]] - Decimální matice reprezentující pixely (RGB) - Nx3
+    return path - int[int[]] - Decimální matice reprezentující pixely (RGBA) - Nx4
+
+    Funkce přidává jeden sloupec k RGB matici pro reprezentaci průhlednosti (A). 
+    Průhlednost je automaticky nastavena na 255 - řádná průhlednost.
+    Fukce se používá při převodu z jpg na png.
+    """
+
+    fivefive = []
+    for a in rgbMat:
+        fivefive.append(255)
+    
+    ffRow = numpy.array(fivefive).reshape(len(rgbMat), 1)
+    rgbaMat = numpy.c_[rgbMat, ffRow]
+    return rgbaMat
+
+
 def main():
     imgName = './data/meme.jpg'
     data = imgToArray(imgName)
-    print(arrayToImg(imgName, data))
+    print(rgbToRgba(data))
+
+main()
     
