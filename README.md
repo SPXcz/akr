@@ -1,2 +1,4 @@
-# akr
-Projekt do Krypta
+# About
+# Installation
+# Usage
+# Authors
