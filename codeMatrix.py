@@ -47,6 +47,7 @@ OUPUT: int - promene, slouzici pro cyklus LSB
 
 Pomocna funkce, ktera slouzi ke zjisteni typu matice v pripade RGBA(format PNG) bude algoritmus pracovat se 4 znaky, v pripade RGB(format JPG) pouze se 3
 """
+"""
 def formatResearch(imgName):
   _, imgFormat= iM.encodeImgFormat(imgName)
   if imgFormat == "PNG":
@@ -56,6 +57,7 @@ def formatResearch(imgName):
     n = 4
     m = 0
   return n, m
+  """
   
 """
 Output: array, string - matice obrazku, format obrazku
@@ -70,9 +72,10 @@ Matice ma tvar bud [[255,255,255,255], [255,255,255,255]] nebo [[255,255,255], [
 """
 
 def lsbMetrixMessage(imgName, text):
-
-  matrixData, imgFormat = iM.encodeImgFormat(imgName)
-  n, m = formatResearch(imgName)
+  
+  matrixData, _= iM.encodeImgFormat(imgName)
+  n = 4
+  m = 0
 
   b_message = messageToBinary(text) + "00000011" #do b message ukladam zpravu binarnim kodu, ukladam ukoncujici retezec pro UTF8
 
@@ -83,40 +86,35 @@ def lsbMetrixMessage(imgName, text):
   for p in range(total_items): 
     for q in range(m,n): #prochazi bud 3 znaky nebo 4 znaky podle formatu
       if (index < req_pixels):
-        if(imgFormat == "JPEG" and matrixData[p][q] == 0):
-          continue
-        else:
           matrixData[p][q] = int(bin(matrixData[p][q])[2:-1] + b_message[index],2)
           index +=1
           """
           Binarni kod kazdeho znaku ma 0b100, pomoci slicingu odstranim 0b a posledni znak
           misto posledni znaku dosadim znak zhasovane zpravy v binarnim kodu. Nasledne to prevedeme zpet do dec
           """
-  return imgFormat, matrixData, text, total_items
+
+  return n,m, matrixData, text, total_items
 
 """
-output: imgFormat, matrixData, imgName - format obrazku, matice, jmeno souboru
+output: matrixData, imgName - format obrazku, matice, jmeno souboru
 
 Funcke, ktera od konce matice opet pomoci metody LSB uklada zhasovany text. Text zde ukladame jako bezpecnosti prvek abych zjistili,
 zda nebylo s obrazkem nejak nakladano. Funkce je podobna jako predchozi s tim rozdilem, ze v ni pracujeme s obracenou matici. 
 
 """
 def lsbMetrixHash(imgName, text):
-  imgFormat, matrixData, text, total_items = lsbMetrixMessage(imgName, text)
-  n, m = formatResearch(imgName)
+  n, m, matrixData, text, total_items = lsbMetrixMessage(imgName, text)
 
   b_hash_message = messageToHash(text) #puvodni zhasovana zprava v binarnim kodu
   req_pixels = len(b_hash_message) #pocet potrebnych prvnku se urcuje z delky hashe
   matrixData = np.flip(matrixData) #otacim matici z [[64,64,64,1], [255,255,255,1]] do [[1,255,255,255], [1,64,64,1]]
   
   index = 0
+
   for p in range(total_items): 
     for q in range(m,n): #prochazi bud 3 znaky nebo 4 znaky podle formatu
       if (index < req_pixels):
-          if(imgFormat == "JPEG" and matrixData[p][q] == 0):
-            continue
-          else:
-            matrixData[p][q] = int(bin(matrixData[p][q])[2:-1] + b_hash_message[index],2)
+          matrixData[p][q] = int(bin(matrixData[p][q])[2:-1] + b_hash_message[index],2)
           index +=1
           """
           Binarni kod kazdeho znaku ma 0b100, pomoci slicingu odstranim 0b a posledni znak
