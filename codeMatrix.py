@@ -48,7 +48,7 @@ OUPUT: int - promene, slouzici pro cyklus LSB
 Pomocna funkce, ktera slouzi ke zjisteni typu matice v pripade RGBA(format PNG) bude algoritmus pracovat se 4 znaky, v pripade RGB(format JPG) pouze se 3
 """
 def formatResearch(imgName):
-  imgFormat, _= iM.getAllParameters(imgName)
+  _, imgFormat= iM.encodeImgFormat(imgName)
   if imgFormat == "PNG":
     n = 4 
     m = 0
@@ -71,7 +71,7 @@ Matice ma tvar bud [[255,255,255,255], [255,255,255,255]] nebo [[255,255,255], [
 
 def lsbMetrixMessage(imgName, text):
 
-  imgFormat, matrixData = iM.getAllParameters(imgName)
+  matrixData, imgFormat = iM.encodeImgFormat(imgName)
   n, m = formatResearch(imgName)
 
   b_message = messageToBinary(text) + "00000011" #do b message ukladam zpravu binarnim kodu, ukladam ukoncujici retezec pro UTF8
@@ -123,7 +123,7 @@ def lsbMetrixHash(imgName, text):
           misto posledni znaku dosadim znak zhasovane zpravy v binarnim kodu. Nasledne to prevedeme zpet do dec
           """
   matrixData = np.flip(matrixData) #otocim matici zpet
-  iM.encodeMatrixFormat(imgName, imgFormat, matrixData)
+  iM.encodeMatrixFormat(imgName, matrixData)
 
 def export(imgName, text):
   text = iM.checkInputText(text, iM.maxSizeText(imgName))
