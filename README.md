@@ -9,6 +9,8 @@ RGB modes is represented by 3x8-bit pixels, and for RGBA its 4x8 bit pixels. Eac
 2. Install libraries by writing this to CMD
 
    `pip install numpy`
+   `pip install pillow`
+   `pip install hashlib`
 # Usage
 ## Encryption
 To hidding data into the picture we use **App.py**. For the program to function you need to add these arguments:
