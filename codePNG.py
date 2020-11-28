@@ -80,6 +80,15 @@ def imgToMatrix(imgName):
         print("ERROR imgToArray({}), can't open!".format(imgName))
 
 
+def jpegToPng(imgName):
+    imgN = re.findall(r"[\w']+", imgName)
+    with Image.open(imgName, "r") as img:
+        newName = "data/{}_jpeg_stego.png".format(imgN[-2])
+        img.save(newName)
+        return newName
+        
+
+
 """
     Input: str, array - nazov obrazku je povodny obrazok 
                         napr. example.png
@@ -87,13 +96,14 @@ def imgToMatrix(imgName):
     Funkcia, ktora z matice zrealizuje obrazok vo formate PNG.
 """
 def matrixToImg(imgName, matrixData):
+    print(matrixData)
     width, height = getImgSize(imgName)
     if matrixData is not None:
         matrixData = matrixData.reshape(height, width, 4)
         img = Image.fromarray(matrixData.astype('uint8'), mode="RGBA")
         imgName = re.findall(r"[\w']+", imgName)
 
-        if imgName[-1] == "JPEG":
+        if imgName[-1] == "jpg":
             formatName = "data/{}_jpeg_stego.png".format(imgName[-2])
         else:
             formatName = "data/{}_stego.png".format(imgName[-2])

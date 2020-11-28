@@ -9,8 +9,6 @@
                         - z matice zrealizuje obrazok podla formatu
         maxSizeText(imgName) - zistuje max pocet znakov pre vstupny
                                 text
-        getAllParameters() - najdolezitejsia funkcia, vola vsetky potrebne 
-                    funkcie a vracia vsetky potrebne parametre
     IMPORT -> napr. 'import inputMenu as iM'
         pristup k jednotlivym funkciam ->  iM.inputMenu()
 """
@@ -49,13 +47,9 @@ def checkInputText(text, maxText):
 """
 def encodeImgFormat(imgName):
     imgFormat = cP.checkType(imgName)
-
-    if imgFormat == "PNG":
-        return cP.imgToMatrix(imgName), imgFormat
-    elif imgFormat == "JPEG":
-        return cJ.rgbToRgba(cJ.imgToArray(imgName)), imgFormat
-    else:
-        print("{} - nevhodny format!!".format(imgFormat))
+    if imgFormat == "JPEG":
+        imgName = cP.jpegToPng(imgName)
+    return cP.imgToMatrix(imgName), imgFormat
 
 
 """
