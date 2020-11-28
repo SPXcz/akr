@@ -8,7 +8,7 @@ RGB modes is represented by 3x8-bit pixels, and for RGBA its 4x8 bit pixels. Eac
 1. Download this repository
 2. Install libraries by writing this to CMD
 
-`pip install numpy`
+   `pip install numpy`
 # Usage
 ## Encryption
 ## Decrption
