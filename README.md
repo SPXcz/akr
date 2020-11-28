@@ -19,14 +19,14 @@ To hidding data into the picture we use App.py. For the program to function you 
 - **Message** - Message you want to encrypr to picture
 
 New picture is saved into data folder
-## Decrption
+## Decryption
 To expose hidden data from the picture we use App.py. For the program to function you need to add these arguments:
 
 `python3 App.py -g ./data/[Name of the file].[File format]`
 - **Name of the file** - Write exact name of the file. File has to be saved in data folder
 - **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
 
-New picture is saved into data folder
+Hidden data are visible in terminal
 # Telegram
 # Image comparison
 Original picture          |  Picture with message
