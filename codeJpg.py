@@ -106,6 +106,4 @@ def main():
     imgName = './data/meme.jpg'
     data = imgToArray(imgName)
     print(rgbToRgba(data))
-
-main()
     
