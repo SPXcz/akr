@@ -3,19 +3,19 @@ File stegano.py byl vytvoren ze ucelem ulozeni zpravy, koncoveho znaku a hashe d
 matice v dec tvaru
 
 Funkce:
-  hash(message) - funkce pro hashovani zpravy
+  messageTohash(message) - funkce pro hashovani zpravy
   messageToBinary(message) - funkce, ktera prevadi zpravu do binarniho kodu
-  encode - nejdulezitejsi funkce, funkce pomoci metodz LSB meni posledni
-    bit cisla v binarnim podle zpravy v binarnim kouu. Do matice se od konce
-    uklada hash v binarnim tvaru stejne jako v predchozim tvaru. Hash slouzi
-    k overeni zda bylo s daty nejak nakladano. Je to bezpecnostni prvek
+  lsbMetrixMessage(imageName, text) - nejdulezitejsi funkce, funkce pomoci metodz LSB meni posledni
+    bit cisla v binarnim podle zpravy v binarnim kouu. 
+  lsbMatrixHash(imageName, text) - Do matice se od konce uklada hash v binarnim tvaru stejne jako v predchozim tvaru. 
+    Hash slouzik overeni zda bylo s daty nejak nakladano. Je to bezpecnostni prvek
+  export(imgName) - funkce, ktera zavola nejdulezitejsi funkce v programu
 
-    IMPORT -> napr 'import stegano as st
-    pristup k funkcim -> st.stegano()
+    IMPORT -> napr 'import codeMatrix as cM
+    pristup k funkcim -> cM.lsbMetrixMessage()
 """
 import numpy as np
 import hashlib
-import inputMenu as iM
 import codePNG as cP
 
 """
@@ -41,26 +41,11 @@ def messageToBinary(message):
   else:
     return ''.join([format(ord(i), "08b") for i in message]) #vratim zpravu v binarnim kodu
 
-"""
-INPUT: string - jmeno obrazku
-OUPUT: int - promene, slouzici pro cyklus LSB
-
-Pomocna funkce, ktera slouzi ke zjisteni typu matice v pripade RGBA(format PNG) bude algoritmus pracovat se 4 znaky, v pripade RGB(format JPG) pouze se 3
-"""
-"""
-def formatResearch(imgName):
-  _, imgFormat= iM.encodeImgFormat(imgName)
-  if imgFormat == "PNG":
-    n = 4 
-    m = 0
-  elif imgFormat == "JPEG":
-    n = 4
-    m = 0
-  return n, m
-  """
   
 """
-Output: array, string - matice obrazku, format obrazku
+Input: imgName, text
+Output: matrixData, text, total_items - pomocna promena pro prochazeni matice, pomocna promena pro prochazeni matice
+text, pocet polozek v matici do kterych se daji ukladat data
 
 Hlavni funkce tohoto filu, ktera pomoci metody LSB meni posledni byt matice v binarnim tvaru
 na konec zpravy je zasifrovan koncovy znak 00000011, ktery slouzi k signalizci konce textu
@@ -73,18 +58,19 @@ Matice ma tvar bud [[255,255,255,255], [255,255,255,255]] nebo [[255,255,255], [
 
 def lsbMetrixMessage(imgName, text):
   
-  matrixData, _= iM.encodeImgFormat(imgName)
-  n = 4
-  m = 0
+  matrixData, _= cP.encodeImgFormat(imgName)
 
-  b_message = messageToBinary(text) + "00000011" #do b message ukladam zpravu binarnim kodu, ukladam ukoncujici retezec pro UTF8
+  b_message = "00000010" + messageToBinary(text) + "00000011" #ulozim retezec zacatku + zpravu binarnim kodu + ukladam ukoncujici retezec pro UTF8
 
   total_items = matrixData.size #pocet prvku v matici se kterymi je mozne pracovat
-  req_pixels = len(b_message) #pocet potrebnych prvku se urcuje z delky zpravy 
+  req_pixels = len(b_message) #pocet potrebnych prvku se urcuje z delky zpravy
+  shapeTuple = matrixData.shape #promena, ktera vraci shape matice a nasledne se pouziva pro prochazeni matice
+  shapeTuple = shapeTuple + (0,) #pridavam nulu
+
   index = 0
 
   for p in range(total_items): 
-    for q in range(m,n): #prochazi bud 3 znaky nebo 4 znaky podle formatu
+    for q in range(shapeTuple[2],shapeTuple[1]):
       if (index < req_pixels):
           matrixData[p][q] = int(bin(matrixData[p][q])[2:-1] + b_message[index],2)
           index +=1
@@ -93,17 +79,17 @@ def lsbMetrixMessage(imgName, text):
           misto posledni znaku dosadim znak zhasovane zpravy v binarnim kodu. Nasledne to prevedeme zpet do dec
           """
 
-  return n,m, matrixData, text, total_items
+  return shapeTuple, matrixData, text, total_items
 
 """
-output: matrixData, imgName - format obrazku, matice, jmeno souboru
+input : imgName, text
 
 Funcke, ktera od konce matice opet pomoci metody LSB uklada zhasovany text. Text zde ukladame jako bezpecnosti prvek abych zjistili,
 zda nebylo s obrazkem nejak nakladano. Funkce je podobna jako predchozi s tim rozdilem, ze v ni pracujeme s obracenou matici. 
 
 """
 def lsbMetrixHash(imgName, text):
-  n, m, matrixData, text, total_items = lsbMetrixMessage(imgName, text)
+  shapeTuple, matrixData, text, total_items = lsbMetrixMessage(imgName, text)
 
   b_hash_message = messageToHash(text) #puvodni zhasovana zprava v binarnim kodu
   req_pixels = len(b_hash_message) #pocet potrebnych prvnku se urcuje z delky hashe
@@ -112,7 +98,7 @@ def lsbMetrixHash(imgName, text):
   index = 0
 
   for p in range(total_items): 
-    for q in range(m,n): #prochazi bud 3 znaky nebo 4 znaky podle formatu
+    for q in range(shapeTuple[2],shapeTuple[1]):
       if (index < req_pixels):
           matrixData[p][q] = int(bin(matrixData[p][q])[2:-1] + b_hash_message[index],2)
           index +=1
@@ -121,8 +107,15 @@ def lsbMetrixHash(imgName, text):
           misto posledni znaku dosadim znak zhasovane zpravy v binarnim kodu. Nasledne to prevedeme zpet do dec
           """
   matrixData = np.flip(matrixData) #otocim matici zpet
-  iM.encodeMatrixFormat(imgName, matrixData)
+  cP.matrixToImg(imgName, matrixData)
+
+
+"""
+input: imgName, text
+
+Pomocna funkce, ktera vyvolava ulozeni zpravy a hashe do obrazku
+"""
 
 def export(imgName, text):
-  text = iM.checkInputText(text, iM.maxSizeText(imgName))
+  text = cP.checkInputText(text, cP.getMaxSizeText(imgName))
   lsbMetrixHash(imgName, text)
