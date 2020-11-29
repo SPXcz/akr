@@ -37,7 +37,7 @@ Original picture          |  Picture with message
 :-------------------------:|:-------------------------:
 ![](data/lol.png)  |  ![](data/lol_stego.png)
 # Authors
-- Roman Klampar - files, making matrix from png format, storing matrix into
-- Michal Kaiser - decode function
-- Ondrej Chudacek - files, jpeg format, storing matrix into picture
+- Roman Klampar - files, PNG format
+- Michal Kaiser - decode function, presentation
+- Ondrej Chudacek - files, JPG format
 - Petr Kriz - encode function, read.me
