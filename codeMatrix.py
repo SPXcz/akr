@@ -14,9 +14,12 @@ Funkce:
     IMPORT -> napr 'import codeMatrix as cM
     pristup k funkcim -> cM.lsbMetrixMessage()
 """
-import numpy as np
-import hashlib
-import codePNG as cP
+try:
+  import numpy as np
+  import hashlib
+  import codePNG as cP
+except Exception as e:
+    print("'codeMatrix.py' EXCEPTION modul: {}".format(e))
 
 """
   Input: string - zprava kterou zada uzivatel
@@ -25,8 +28,11 @@ import codePNG as cP
   Funkce, ktera na zaklade vstupniho testu vraci zhashovany text pomoci sha256
 """
 def messageToHash(message):
-  hashMessage = hashlib.sha256(message.encode('utf-8')).hexdigest()
-  return messageToBinary(hashMessage)
+  try:
+    hashMessage = hashlib.sha256(message.encode('utf-8')).hexdigest()
+    return messageToBinary(hashMessage)
+  except(ValueError, TypeError):
+    print("Value or Type error occurred")
 
 """
   Input: string - zprava ktera ma byt prevedena do binarniho kodu
@@ -36,11 +42,13 @@ def messageToHash(message):
 """
 
 def messageToBinary(message):
-  if (len(message) == 0):
-    print("Zadna data")
-  else:
-    return ''.join([format(ord(i), "08b") for i in message]) #vratim zpravu v binarnim kodu
-
+  try:
+    if (len(message) == 0):
+      print("Zadna data")
+    else:
+      return ''.join([format(ord(i), "08b") for i in message]) #vratim zpravu v binarnim kodu
+  except(TypeError, ValueError):
+    print("Value or Type error occurred")
   
 """
 Input: imgName, text
