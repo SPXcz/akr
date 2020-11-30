@@ -3,8 +3,16 @@ import numpy
 import re
 import codePNG as cP
 
-#Pak smazat a nahradit romanovou funkcí
+#Z designových důvodů se tento soubor nepoužívá.
+
+
 def getImgSize(imgName):
+    """
+    param imgName - String - Cesta k souboru s obrázkem
+    return width, height - int, int - Šířka a výška obrázku v pixelech
+
+    Pomocná funkce pro získání rozměrů obrázku. Kvůli otevírání souboru by neměla být v jiném with - open statmentu.
+    """
     with Image.open(imgName, "r") as img:
         width, height = img.size
 
@@ -18,6 +26,8 @@ def getMaxSizeText(imgName):
     Pomocna funkcia, ktora zisti max pocet bajtů, ktore je moznes
     ulozit do obrazku. 
     Odcita velkost hashu a prazdny point.
+
+    NEPOUŽÍVÁ SE, je nahrazena podobnou funkcí v codePNG.py
     """
     with Image.open(imgName, "r") as img:
         width, height = img.size
@@ -30,8 +40,10 @@ def imgToArray(path):
     param path - String - Cesta k jpg souboru
     return arrayData - int[int[]] - Decimální matice reprezentující pixely (RGB)
 
-    Funkcia ma za ulohu, z obrazku spravit maticu kde budu 
+    Funkcia ma za ulohu, z jpg obrazku spravit maticu kde budu 
     ulozene jednotlive pixely v mode 'RGB'
+
+    NEPOUŽÍVÁ SE, je nahrazena podobnou funkcí 
     """
     try:
         with Image.open(path) as img:
@@ -62,7 +74,7 @@ def arrayToImg(imgName, matrixIn):
     Output - ulozi novy obrazok (stego_example.png)
     Funkcia, ktora z matice zrealizuje obrazok vo formate JPG.
 
-    NEPOUŽÍVÁNO
+    NEPOUŽÍVÁNO, protože se .jpg vůbec neukládá
     """
 
     width, height = getImgSize(imgName)
@@ -93,7 +105,7 @@ def rgbToRgba(rgbMat):
     Průhlednost je automaticky nastavena na 255 - řádná průhlednost.
     Fukce se používá při převodu z jpg na png.
 
-    NEPOUŽÍVÁNO
+    NEPOUŽÍVÁNO, protože ukládáme .jpg přímo do .png místo do matice a pak zase do .png
     """
 
     fivefive = []
@@ -104,7 +116,7 @@ def rgbToRgba(rgbMat):
     rgbaMat = numpy.c_[rgbMat, ffRow]
     return rgbaMat
 
-
+#Test funkcí v souboru
 def main():
     imgName = './data/meme.jpg'
     data = imgToArray(imgName)

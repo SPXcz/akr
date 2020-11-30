@@ -21,7 +21,7 @@ try:
         print("MESSAGE:")
         print("[MESSAGE]\tString with your message. Must begin and end with \"")
     else:
-        print("Wrong flag. Use -help to explore options.")
+        print("Wrong argument. Use -help to explore options.")
 except Exception as e:
     print(e)
     print("Use python3 App.py -help to get more info.")

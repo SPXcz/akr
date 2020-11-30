@@ -2,6 +2,7 @@ import sys
 
 #Sem si mmůžete zajít, když potřebujete něco zakódovat nebo rozkódovat z/do UTF-8
 #Stačí si naimportovat tento soubor pomocí - from textCodeDecode import TextCodeDecode
+#Z nějakého důvodu se všichni na tento soubor vykašlali a udělali si vlastní implementaci.
 
 def decToArray(dec):
     """
