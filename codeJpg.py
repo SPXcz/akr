@@ -1,6 +1,7 @@
 from PIL import Image, ImageFilter
 import numpy
 import re
+import codePNG as cP
 
 #Pak smazat a nahradit romanovou funkcí
 def getImgSize(imgName):
@@ -91,6 +92,8 @@ def rgbToRgba(rgbMat):
     Funkce přidává jeden sloupec k RGB matici pro reprezentaci průhlednosti (A). 
     Průhlednost je automaticky nastavena na 255 - řádná průhlednost.
     Fukce se používá při převodu z jpg na png.
+
+    NEPOUŽÍVÁNO
     """
 
     fivefive = []
@@ -105,5 +108,5 @@ def rgbToRgba(rgbMat):
 def main():
     imgName = './data/meme.jpg'
     data = imgToArray(imgName)
+    cP.matrixToImg(imgName, rgbToRgba(data))
     print(rgbToRgba(data))
-    
