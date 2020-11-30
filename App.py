@@ -1,6 +1,6 @@
 from sys import argv
 import codeMatrix as inlsb
-import LSBdecodePNG as outlsb
+import LSBdecode as outlsb
 
 try:
     if(argv[1] == "-h"):

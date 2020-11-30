@@ -1,26 +1,27 @@
 # @file SteganoCBTencode.py
 # @author Michal Kaiser(221034)
-# @version 0.4
+# @version 1.0
 # @date 2020-11-23
 # @copyright Copyright (c) 2020
 #
-# Časť projektu steganografie obrazku, kde je spracované dekodovanie textu
-# z obrázku, v ktorom bol text zakodovaný na najmenej príznakové bity.
+# Časť projektu steganografie obrazku, kde je spracované dekodovanie textu z obrázku, v ktorom bol text zakodovaný
+# na najmenej príznakové bity.
+#
 try:
-    import inputMenu as Mn
+    import codePNG as cPNG
     import hashlib
     import numpy as np
 except Exception as e:
-    print("LSBdecodePNG.py EXCEPTION modul: {}".format(e))
+    print("LSBdecode.py EXCEPTION modul: {}".format(e))
 
 
-# @brief funkcia na konvertovanie decimalneho cisla z matice do stringu z binárnymi hodnotami
-#        s maximalnou decimalnou hodnotou 255 a minimalnou 0
+# @brief funkcia na konvertovanie decimalneho cisla z matice do stringu z binárnymi hodnotami s maximalnou decimalnou
+# hodnotou 255 a minimalnou 0
 #
 # @param num        hodnota jedneho z decimalnych cisiel(R, G, B, A) z matice
 # @return binary    vracia binarny hodnotu cisla v stringu
 def decimalToBinary(num):
-    try:
+   try:
         if num in range(256):
             binary = bin(num).replace("0b", "")
             if 8 >= len(binary):
@@ -29,17 +30,17 @@ def decimalToBinary(num):
         else:
             raise ValueError("Cislo neni z rozsahu 0 - 255")
         return binary
-    except(ValueError, TypeError):
+   except(ValueError, TypeError):
         print("Value or Type error occurred")
 
 
-# @brief funkcia na prevedenie celej matice do binarneho kodu
+# @brief funkcia na prevedenie celej matice na dekodovanu spravu.
 #
 # @param matrix_of_img      matica RGBA vytvorena z obrazku
-# @return binary_stream     retazec znakov pozostavajuci z binarneho kodu
-def matrixToBinary(matrix_of_img):
+# @return text              retazec znakov pozostavujuci zo spravy
+def matrixToMessage(matrix_of_img):
     try:
-        text = ""
+        text = ''
         binary_stream = ''
         for i in range(0, len(matrix_of_img)):
             for j in range(0, len(matrix_of_img[i])):
@@ -47,21 +48,27 @@ def matrixToBinary(matrix_of_img):
                 binary_stream = binary_stream + binary_matrix
                 if len(binary_matrix) != 8:
                     raise ValueError("binarna hodnota matrixu neni v oktalovom tvare")
+                # ak prejde matica 16 (64 bitov)px tak zoberie posledne priznakove bity a prevedie ich z binaru
+                # do stringu
                 if 64 == len(binary_stream):
                     lsb = getLSB(binary_stream)
+                    # binarny kod znaku, ktory naznacuje koniec textu
+                    if i == 1 and j == 3 and lsb != '00000010' and len(binary_matrix) > 128:
+                        raise ValueError("Na zaciatku spravy neni znak naznacujuci zaciatok textu")
                     if lsb == '00000011':
                         return text
-                    text = text + binaryToUTF8(lsb)
+                    text += binaryToString(lsb)
+                    if lsb == '00000010':
+                        text = ''
                     binary_stream = ""
         return text
     except(ValueError, TypeError):
-        print("Matica je v nespravnom formate")
+       print("Matica je v nespravnom formate")
 
 
-# @brief Funkcia na ziskanie posledneho priznakoveho bitu z retazca
-#        kde kazda osmica bitu predstavuje jeden z paramterov R, G, B, A
-#        a na konci kazdej osmice je najmenej vyznamovy bit, do ktoreho
-#        sa uklada po jednom bite binarny kod textu
+# @brief Funkcia na ziskanie posledneho priznakoveho bitu z retazca kde kazda osmica bitu predstavuje  jeden
+#        z paramterov R, G, B, A a na konci kazdej osmice je najmenej vyznamovy bit, do ktoreho sa uklada po
+#        jednom bite binarny kod textu
 #
 # @param binary_stream      retazec bianrnej hodnoty matice
 # @return lsb               retazec binarnej hodnoty textu, ktora bola
@@ -70,13 +77,13 @@ def matrixToBinary(matrix_of_img):
 def getLSB(binary_stream):
     try:
         lsb = ''
-        j = 0
+        i = 0
         while binary_stream != "":
             px = binary_stream[:8]
             lsb = lsb + px[-1]
-            j += 1
-            if j == 8:
-                j = 0
+            i += 1
+            if i == 8:
+                i = 0
             binary_stream = binary_stream[8:]
         return lsb
     except(ValueError, TypeError):
@@ -87,21 +94,21 @@ def getLSB(binary_stream):
 #
 # @param lsb             vstup je binarna hodnota textu ktory bol zakodovany do obrazku
 # @return utf_str        vystup funkcie je string s kodovacou sadou UTF-8
-def binaryToUTF8(lsb):
+def binaryToString(lsb):
     binary_values = lsb.split()
-    ascii_string = ""
+    string = ""
     for binary_value in binary_values:
-        an_integer = int(binary_value, 2)
-        ascii_character = chr(an_integer)
-        ascii_string += ascii_character
-    return ascii_string
+        integer_of_bin = int(binary_value, 2)
+        character = chr(integer_of_bin)
+        string += character
+    return string
 
 
 # @brief Funkcia na vypocet hashu sha o bitovej dlzke 256 bitov
 #
 # @param message        Sprava dekodovana z obrazku v UTF-8 kodovani
 # @return hs            Funkcia vracia hodnotu hashu danej spravy
-def hash_of_message(message):
+def hashOfMessage(message):
     try:
         hash_of_mess = hashlib.sha256(message.encode()).hexdigest()
         return hash_of_mess
@@ -109,14 +116,14 @@ def hash_of_message(message):
         print("Value or Type error occurred")
 
 
-# @brief Funkcia, ktora zoberie hash ulozeny na koniec matice obrazku,
-#        ktory sa bude porovnavat s vypocitanym hashom dekodvanej spravy
+# @brief Funkcia, ktora zoberie hash ulozeny na koniec matice obrazku, ktory sa bude porovnavat s vypocitanym hashom
+#        dekodvanej spravy.
 #
 # @param matrix_of_img  Matica obrazku vo formate matica ([[R, G, B, A],...])
 # @return hash            Funckia Vrati dekodovany hash
-def get_hash_from_end(matrix):
-    hash_end = np.flip(matrix[-512//len(matrix[0]):])
-    hash_string = matrixToBinary(hash_end)
+def getHashFromImg(matrix):
+    hash_end = np.flip(matrix[-512 // len(matrix[0]):])
+    hash_string = matrixToMessage(hash_end)
     return hash_string
 
 
@@ -126,25 +133,28 @@ def get_hash_from_end(matrix):
 #
 # @param hs_mess        hash z dekodovaneho textu
 # @param hs_end_of_img  hash zakodovany na konci matice
-# @param message        sprava vo formate string
-def compare_hash(hs_mess, hs_end_of_img, message):
+def compareHash(hs_mess, hs_end_of_img):
     try:
         if hs_mess == hs_end_of_img:
-            print("Dekodovana sprava: "+message)
+            print("Hash spravy a hash ziskany z obrazku sa rovanju: " + hs_mess)
+            return True
         else:
-            print("Sprava bola pomenena ")
+            print("Hash spravy a hash ziskany z obrazku sa nerovanju, obrazok moze byt poskodeny, alebo sa sprava "
+                  "zakodvala nespravne\nHash spravy: " + hs_mess + "\nHash z obrazku: " + hs_end_of_img)
+            return False
     except(TypeError, ValueError):
         print("Value or Type error occurred")
 
 
 def export(path):
-        # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
-        # @brief Kontorlná matica na akúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
-        matrix1, img_format = Mn.encodeImgFormat(path)
-        print(img_format)
-        mess = matrixToBinary(matrix1)
-        hash_of_me1 = hash_of_message(mess)
-        print(hash_of_me1)
-        hash_end1 = get_hash_from_end(matrix1)
-        print(hash_end1)
-        compare_hash(hash_of_me1, hash_end1, mess)
+    # @brief Kontorlná matica na skúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
+    if path:
+        matrix1, _ = cPNG.encodeImgFormat(path)
+        mess = matrixToMessage(matrix1)
+        hash_of_me1 = hashOfMessage(mess)
+        hash_end1 = getHashFromImg(matrix1)
+        cmp_hash = compareHash(hash_of_me1, hash_end1)
+        if cmp_hash:
+            print("Dekodovana sprava: " + mess)
+    else:
+        raise ValueError("Cesta ku obrazku je zadane nespravne")
