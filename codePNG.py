@@ -69,8 +69,8 @@ def getImgSize(imgName):
 def getMaxSizeText(imgName):
     with Image.open(imgName, "r") as img:
         width, height = img.size
-        # 514=(hashSize*2)+2 ..hashSize-256b,4b-RGBA,2px-NULL point
-        maxSize = int((width * height) / 2 - 516)
+        # 518=(hashSize*2)+4 ..hashSize-256b,4b-RGBA,2px-NULL point
+        maxSize = int((width * height) / 2 - 518)
         return maxSize
 
 
