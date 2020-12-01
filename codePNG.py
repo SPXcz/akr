@@ -69,8 +69,8 @@ def getImgSize(imgName):
 def getMaxSizeText(imgName):
     with Image.open(imgName, "r") as img:
         width, height = img.size
-        # 518=(hashSize*2)+4 ..hashSize-256b,4b-RGBA,2px-NULL point
-        maxSize = int((width * height) / 2 - 518)
+        maxSize = int((width * height) / 2 - 66)
+        print("img size: {}\nmax size: {}".format(width*height, maxSize))
         return maxSize
 
 
@@ -163,7 +163,7 @@ def encodeImgFormat(imgName):
 
 
 """
-    Input: int - max pocet znakov, ktorych je mozne vlozit do obrazku
+    Input: str, int - max pocet znakov, ktorych je mozne vlozit do obrazku
     Output: str - return vstupneho textu
     Pomocna funkcia, ktora je urcena pre nacitanie vstupneho textu
     a zaroven kontroluje max pocet znakov textu, ak je text vacsi nez
@@ -172,10 +172,13 @@ def encodeImgFormat(imgName):
 def checkInputText(text, maxText):
     if len(text) <= maxText:
         return text
+    elif maxText <= 0:
+        print("Too small picture...")
+        return None
     else:
         try:
             text = str(input("Message[max {}]: ".format(maxText))).rstrip()
             return checkInputText(text, maxText)
-        except InterruptedError:
-            print("ERROR checkInputText(), end of program...")
+        except KeyboardInterrupt:
+            print("\nERROR checkInputText(), end of program...")
 
