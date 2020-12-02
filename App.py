@@ -1,11 +1,20 @@
 from sys import argv
 import codeMatrix as inlsb
 import LSBdecode as outlsb
+# Hlavní soubor, který slučuje a řídí celkou aplikaci.
+# Získává argumenty z terminálu a podle nich řídí chod aplikace.
+# 
+# Autor: Ondřej Chudáček
 
 try:
-    if(argv[1] == "-h"):
+    if(argv[1] == "-h" and argv[2] is not None):
         path = argv[2]
-        message = argv[3]
+
+        if(argv[3] == "-t"):
+            message = ""
+            #Tady načteš ten text ze souboru a vložíš ho do proměnné message, který je výše. Nezapomeň soubor zavřít a poznámku smazat.
+        else:
+            message = argv[3]
         inlsb.export(path, message)
         print("Your image is in ./data directory")
     elif(argv[1] == "-g" and argv[2] is not None):
