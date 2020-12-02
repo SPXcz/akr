@@ -51,6 +51,13 @@ Original picture          |  Picture with message
 ![](data/lol.png)  |  ![](data/lol_stego.png)
 
 # Tests
+## Maximum text size mathematically calculated
+Important information to understand the calculation:
+- 1 character == 2 pixels
+- 2 special characters - 1 at the beginning of the picture, and 1 at the end of the text
+- 64 characters - SHA256 key at the end of the picture
+- total number of pixels - IMAGE.WIDTH x IMAGE.HEIGHT
+**(IMAGE.WIDTH x IMAGE.HEIGHT) / 2 - 66**
 
 # Authors
 - Roman Klampar - files, PNG format

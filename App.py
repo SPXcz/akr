@@ -11,8 +11,8 @@ try:
         path = argv[2]
 
         if(argv[3] == "-t"):
-            message = ""
-            #Tady načteš ten text ze souboru a vložíš ho do proměnné message, který je výše. Nezapomeň soubor zavřít a poznámku smazat.
+            with open(argv[4], "r") as f:
+                message = f.read().replace("\n", " ")
         else:
             message = argv[3]
         inlsb.export(path, message)
