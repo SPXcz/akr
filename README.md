@@ -49,6 +49,9 @@ Now you can see hidden message and hashes in terminal. If the hashes are the sam
 Original picture          |  Picture with message
 :-------------------------:|:-------------------------:
 ![](data/lol.png)  |  ![](data/lol_stego.png)
+
+# Tests
+
 # Authors
 - Roman Klampar - files, PNG format
 - Michal Kaiser - decode function, presentation
