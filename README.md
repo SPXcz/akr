@@ -40,6 +40,7 @@ Then you are asked to write in message, so write there for example Hi and press 
 Next example is for decryption. Once you did the encryption, you can try do decrypt your image. You should have image with name_stego.[format] in your data folder, if not, just make enryption process for image you want or put your own image with _stego to data folder. I chose this image lol_stego.png, so write this command to your terminal.
 
 `python3 App.py -h ./data/lol_stego.png`
+
 Now you can see hidden message and hashes in terminal. If the hashes are the same, everything is alright and noone tried change your data. Hash is security feature, which tells you if someone tried to manage your image or not.
 
 # Telegram
