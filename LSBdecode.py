@@ -21,7 +21,7 @@ except Exception as e:
 # @param num        hodnota jedneho z decimalnych cisiel(R, G, B, A) z matice
 # @return binary    vracia binarny hodnotu cisla v stringu
 def decimalToBinary(num):
-   try:
+    try:
         if num in range(256):
             binary = bin(num).replace("0b", "")
             if 8 >= len(binary):
@@ -30,7 +30,7 @@ def decimalToBinary(num):
         else:
             raise ValueError("Cislo neni z rozsahu 0 - 255")
         return binary
-   except(ValueError, TypeError):
+    except(ValueError, TypeError):
         print("Value or Type error occurred")
 
 
@@ -53,7 +53,7 @@ def matrixToMessage(matrix_of_img):
                 if 64 == len(binary_stream):
                     lsb = getLSB(binary_stream)
                     # binarny kod znaku, ktory naznacuje koniec textu
-                    if i == 1 and j == 3 and lsb != '00000010' and len(binary_matrix) > 128:
+                    if i == 1 and j == 3 and lsb != '00000010' and len(matrix_of_img) > 128:
                         raise ValueError("Na zaciatku spravy neni znak naznacujuci zaciatok textu")
                     if lsb == '00000011':
                         return text
@@ -62,8 +62,8 @@ def matrixToMessage(matrix_of_img):
                         text = ''
                     binary_stream = ""
         return text
-    except(ValueError, TypeError):
-       print("Matica je v nespravnom formate")
+    except(ValueError, TypeError) as error:
+        print(error)
 
 
 # @brief Funkcia na ziskanie posledneho priznakoveho bitu z retazca kde kazda osmica bitu predstavuje  jeden
@@ -110,10 +110,13 @@ def binaryToString(lsb):
 # @return hs            Funkcia vracia hodnotu hashu danej spravy
 def hashOfMessage(message):
     try:
-        hash_of_mess = hashlib.sha256(message.encode()).hexdigest()
-        return hash_of_mess
+        if message is not None:
+            hash_of_mess = hashlib.sha256(message.encode()).hexdigest()
+            return hash_of_mess
+        else:
+            raise ValueError("Hash spravy nie je mozny ziskat")
     except(ValueError, TypeError):
-        print("Value or Type error occurred")
+        print("Hash spravy nie je mozny ziskat")
 
 
 # @brief Funkcia, ktora zoberie hash ulozeny na koniec matice obrazku, ktory sa bude porovnavat s vypocitanym hashom
@@ -143,18 +146,20 @@ def compareHash(hs_mess, hs_end_of_img):
                   "zakodvala nespravne\nHash spravy: " + hs_mess + "\nHash z obrazku: " + hs_end_of_img)
             return False
     except(TypeError, ValueError):
-        print("Value or Type error occurred")
+        print("Hash sprav sa neda porovnat")
 
 
 def export(path):
-    # @brief Kontorlná matica na skúšku, kde su v matici ulozene hodnoty pixelov [R, G, B, A]
-    if path:
-        matrix1, _ = cPNG.encodeImgFormat(path)
-        mess = matrixToMessage(matrix1)
-        hash_of_me1 = hashOfMessage(mess)
-        hash_end1 = getHashFromImg(matrix1)
-        cmp_hash = compareHash(hash_of_me1, hash_end1)
-        if cmp_hash:
-            print("Dekodovana sprava: " + mess)
-    else:
-        raise ValueError("Cesta ku obrazku je zadane nespravne")
+    try:
+        if path:
+            matrix1, _ = cPNG.encodeImgFormat(path)
+            mess = matrixToMessage(matrix1)
+            hash_of_me1 = hashOfMessage(mess)
+            hash_end1 = getHashFromImg(matrix1)
+            cmp_hash = compareHash(hash_of_me1, hash_end1)
+            if cmp_hash:
+                print("Dekodovana sprava: " + mess)
+        else:
+            raise ValueError("Cesta ku obrazku je zadane nespravne")
+    except ValueError as error:
+        print(error)
