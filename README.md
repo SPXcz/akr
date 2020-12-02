@@ -35,6 +35,7 @@ Hidden data are visible in terminal
 This is example for specific image. After downloading repository and installing needed libraries, open terminal in your project. In data folder, there are three images, so choose on of them or, put there your own picture. For this example, we chose image lol.png. To encrypt this picture write this specific command to your terminal.
 
 `python3 App.py -h ./data/lol.png`
+
 Then you are asked to write in message, so write there for example Hi and press enter. Now, there will appear new picture with data folder with name lol_stego.png and that's your picture with hidden data
 
 Next example is for decryption. Once you did the encryption, you can try do decrypt your image. You should have image with name_stego.[format] in your data folder, if not, just make enryption process for image you want or put your own image with _stego to data folder. I chose this image lol_stego.png, so write this command to your terminal.
