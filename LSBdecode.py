@@ -158,8 +158,16 @@ def export(path):
             hash_end1 = getHashFromImg(matrix1)
             cmp_hash = compareHash(hash_of_me1, hash_end1)
             if cmp_hash:
-                print("Dekodovana sprava: " + mess)
+                if len(mess) < 500:
+                    print("Dekodovana sprava: " + mess)
+                    with open("message.txt", "w") as file:
+                        file.write(mess)
+                else:
+                    with open("message.txt", "w") as file:
+                        file.write(mess)
+
         else:
             raise ValueError("Cesta ku obrazku je zadane nespravne")
     except ValueError as error:
         print(error)
+
