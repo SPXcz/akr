@@ -70,7 +70,6 @@ def getMaxSizeText(imgName):
     with Image.open(imgName, "r") as img:
         width, height = img.size
         maxSize = int((width * height) / 2 - 66)
-        print("img size: {}\nmax size: {}".format(width*height, maxSize))
         return maxSize
 
 
