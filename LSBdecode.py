@@ -165,6 +165,7 @@ def export(path):
                 else:
                     with open("message.txt", "w") as file:
                         file.write(mess)
+                    print("sprava sa zapisala do textoveho suboru")
 
         else:
             raise ValueError("Cesta ku obrazku je zadane nespravne")
