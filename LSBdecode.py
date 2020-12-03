@@ -160,10 +160,10 @@ def export(path):
             if cmp_hash:
                 if len(mess) < 500:
                     print("Dekodovana sprava: " + mess)
-                    with open("message.txt", "w") as file:
+                    with open("message_output.txt", "w") as file:
                         file.write(mess)
                 else:
-                    with open("message.txt", "w") as file:
+                    with open("message_output.txt", "w") as file:
                         file.write(mess)
                     print("sprava sa zapisala do textoveho suboru")
 
