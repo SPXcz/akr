@@ -14,16 +14,16 @@ RGB modes is represented by 3x8-bit pixels, and for RGBA its 4x8 bit pixels. Eac
    
    `pip install hashlib`
 # Usage
-## Encryption
+## Steganography
 To hidding data into the picture we use **App.py**. For the program to function you need to add these arguments:
 
 `python3 App.py -h ./data/[Name of the file].[File format] "[Message]"`
 - **Name of the file** - Write exact name of the file. File has to be saved in data folder
 - **File format** - Write file format. Our program works with two file formats. **.png** and **.jpg**
-- **Message** - Message you want to encrypr to picture
+- **Message** - Message you want to hide into image
 
 New picture is saved into data folder
-## Decryption
+## Desteganography
 To expose hidden data from the picture we use **App.py**. For the program to function you need to add these arguments:
 
 `python3 App.py -g ./data/[Name of the file].[File format]`
@@ -32,13 +32,13 @@ To expose hidden data from the picture we use **App.py**. For the program to fun
 
 Hidden data are visible in terminal
 ## Example
-This is example for specific image. After downloading repository and installing needed libraries, open terminal in your project. In data folder, there are three images, so choose on of them or, put there your own picture. For this example, we chose image lol.png. To encrypt this picture write this specific command to your terminal.
+This is example for specific image. After downloading repository and installing needed libraries, open terminal in your project. In data folder, there are three images, so choose on of them or, put there your own picture. For this example, we chose image lol.png. To steganography this picture write this specific command to your terminal.
 
 `python3 App.py -h ./data/lol.png`
 
 Then you are asked to write in message, so write there for example Hi and press enter. Now, there will appear new picture with data folder with name lol_stego.png and that's your picture with hidden data
 
-Next example is for decryption. Once you did the encryption, you can try do decrypt your image. You should have image with name_stego.[format] in your data folder, if not, just make enryption process for image you want or put your own image with _stego to data folder. I chose this image lol_stego.png, so write this command to your terminal.
+Next example is for desteganography. Once you did the encryption, you can try do decrypt your image. You should have image with name_stego.[format] in your data folder, if not, just make steganography process for image you want or put your own image with _stego to data folder. I chose this image lol_stego.png, so write this command to your terminal.
 
 `python3 App.py -h ./data/lol_stego.png`
 
