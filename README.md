@@ -36,7 +36,7 @@ Hidden data are visible in terminal
 ## Example
 This is example for specific image. After downloading repository and installing needed libraries, open terminal in your project. In data folder, there are images, so choose on of them, or put there your own image (.png or .jpg) . For this example, we chose folder ./data and image lol.png. To steganography this image write this specific command to your terminal.
 
-`Python App.py -h data/lol.png`
+`Python App.py -h data/lol.png "message"`
 
 Then you are asked to write in message, so write there for example Hi and press enter. Now, there will appear new picture with data folder with name lol_stego.png and that's your picture with hidden data
 
